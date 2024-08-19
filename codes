@@ -1,0 +1,29 @@
+
+from imageai.Detection import ObjectDetection
+from PIL import image 
+
+detector = ObjectDetection
+
+model_path = "./yolov3.pt"
+
+detector.SetModeTypeAsYOLOv3()
+detector.SetMode(model_path)
+
+def recognize_image_objects(image_path: str):
+    image_input = Image.open(image_path)
+    try:
+        # Convert image to RGB if it has an alpha channel
+        if image_input.mode in ("RGBA", "LA") or (image_input.mode == "P" and "transparency" in image_input.info):
+            image_input = image_input.convert("RGB")   
+        detections = detector.detectObjectsFromImage(
+            input_image = image_input,
+            output_image_path = "output.png"
+        )
+        image = Image.open("output.png")
+        return ("output.png", detections)   
+
+@bot.command("tani")
+asnyc def recognize_image_yolo(ctx):
+    if ctx.message.attachments:
+
+bot.run(TOKEN)
